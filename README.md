@@ -1,7 +1,7 @@
 # city-fixtures-ble
 
     Control an elevator floor selection panel with an app and BLE.
-    The hardware should put out a BLU peripheral that will allow a user to select a floor.
+    The hardware should put out a BLE peripheral that will allow a user to select a floor.
 
 ## Components
 
