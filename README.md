@@ -25,10 +25,12 @@ _The controller should be able to be setup as “Elevator” or “Floor”_
 - Set the name of the floor
 - Push the name of the Floor and available options
 
-The Mobile App
-
-- Upon reaching a configured signal stretch (RSSI), the App will confirm your floor number, then ask you to select UP/Down.
-- Once inside the elevator the APP will switch to elevator mode, and ask you to select the floor number you wish to go based on the available options.
-
 V2 -
 Option to add a LCD screen with a QR code - this code changes every 5 mins, the idea here is that the user will need to scan the QR code to gain access to the floor or elevator controller.
+
+
+## ESP32 Firmware
+
+### Additional libraries
+    
+- ArduinoJson
