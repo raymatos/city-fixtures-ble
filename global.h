@@ -23,7 +23,9 @@ enum DeviceType
 
 struct Config
 {
+    char identifier[32];
     uint8_t mode;
+    //
 };
 
 extern Config config;
