@@ -51,24 +51,30 @@ void loadFSConfig()
             if (error)
                 debugE("Failed to read configuration file, using default configuration \r\n");
 
-            // config.mode = doc["mode"] | (uint8_t)RTCONLY;
+            config.mode = doc["mode"] | FLOOR;
+            if (config.mode == FLOOR)
+            {
+                config.relay_count = 2;
+            }
+            else
+            {
+                config.relay_count = doc["relay_count"] | 8;
+            }
 
-            // JsonArray segments = doc["weekOfDays"].as<JsonArray>();
-            // uint8_t index = 0;
-            // for (JsonObject obj : segments)
-            // {
-            //     config.segments[index].wakehour = (int8_t)obj["wakehour"];
-            //     config.segments[index].wakemin = (int8_t)obj["wakemin"];
-            //     config.segments[index].wakesec = (int8_t)obj["wakesec"];
-            //     config.segments[index].sleephour = (int8_t)obj["sleephour"];
-            //     config.segments[index].sleepmin = (int8_t)obj["sleepmin"];
-            //     config.segments[index].sleepsec = (int8_t)obj["sleepsec"];
-            //     index++;
-            // }
+            //
+            const char *identifier = doc["name"] | (config.mode == FLOOR ? DEFAULT_FLOOR_NAME : DEFAULT_ELEVATOR_NAME);
+            strcpy(config.identifier, identifier);
 
-            // Close the file (Curiously, File's destructor doesn't close the file)
+            JsonArray relays = doc["relays"].as<JsonArray>();
+            uint8_t index = 0;
+            for (JsonObject obj : relays)
+            {
+                const char *description = obj["desc"];
+                strcpy(config.relays[index].description, description);
+                config.relays[index].channel = (uint8_t)obj["channel"];
+                index++;
+            }
             configFile.close();
-            debugA("Mode: %d ...\r\n", config.mode);
         }
         else
         {
@@ -78,15 +84,15 @@ void loadFSConfig()
     else
     {
         debugE("No found config file in SPIFFS, will save default config\r\n");
-        // for (uint8_t idx = 0; idx < sizeof(config.segments) / sizeof(TimeSegment); idx++)
-        // {
-        //     config.segments[idx].wakehour = 0;
-        //     config.segments[idx].wakemin = 0;
-        //     config.segments[idx].wakesec = 0;
-        //     config.segments[idx].sleephour = 23;
-        //     config.segments[idx].sleepmin = 59;
-        //     config.segments[idx].sleepsec = 59;
-        // }
+
+        config.mode = FLOOR;
+        config.relay_count = 2;
+        strcpy(config.identifier, DEFAULT_FLOOR_NAME);
+        for (uint8_t idx = 0; idx < sizeof(config.relays) / sizeof(FloorRelay); idx++)
+        {
+            strcpy(config.relays[idx].description, "floor");
+            config.relays[idx].channel = idx;
+        }
         saveFSConfig();
     }
 }
@@ -95,18 +101,16 @@ void saveFSConfig()
 {
     StaticJsonDocument<1024> doc;
     doc["mode"] = config.mode;
-    // JsonArray segments = doc.createNestedArray("weekOfDays");
-    // for (uint8_t idx = 0; idx < sizeof(config.segments) / sizeof(TimeSegment); idx++)
-    // {
-    //     JsonObject segment = segments.createNestedObject();
-    //     //     {"wakehour": 0, "wakemin": 0, "wakesec": 0, "sleephour": 23, "sleepmin": 59, "sleepsec": 59},
-    //     segment["wakehour"] = config.segments[idx].wakehour;
-    //     segment["wakemin"] = config.segments[idx].wakemin;
-    //     segment["wakesec"] = config.segments[idx].wakesec;
-    //     segment["sleephour"] = config.segments[idx].sleephour;
-    //     segment["sleepmin"] = config.segments[idx].sleepmin;
-    //     segment["sleepsec"] = config.segments[idx].sleepsec;
-    // }
+    doc["name"] = config.identifier;
+    doc["relay_count"] = config.relay_count;
+
+    JsonArray relays = doc.createNestedArray("relays");
+    for (uint8_t idx = 0; idx < sizeof(config.relays) / sizeof(FloorRelay); idx++)
+    {
+        JsonObject relay = relays.createNestedObject();
+        relay["desc"] = config.relays[idx].description;
+        relay["channel"] = config.relays[idx].channel;
+    }
 
     File configFile = SPIFFS.open("/config.json", "w");
     if (!configFile)
