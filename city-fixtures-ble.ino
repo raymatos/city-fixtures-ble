@@ -9,6 +9,7 @@
 #include "time.h"
 #include "configweb.h"
 #include "peripheral.h"
+#include "ble_handler.h"
 
 void WiFiGotIP(WiFiEvent_t event, WiFiEventInfo_t info)
 {
@@ -77,9 +78,16 @@ void setup()
 
     // Init peripherals
     init_peripherals();
+
+    // Init BLE handler
+    init_ble_service();
 }
 
 void loop()
 {
+    //
     configWebProc();
+
+    //
+    ble_handler_loop();
 }
