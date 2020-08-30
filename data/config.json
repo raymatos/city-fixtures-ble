@@ -1,55 +1,39 @@
 {
-	"mode": 1,
-	"ldrthreshold": 1400,
-	"same_schedule": true,
-	"weekOfDays": [{
-		"wakehour": 0,
-		"wakemin": 0,
-		"wakesec": 0,
-		"sleephour": 23,
-		"sleepmin": 59,
-		"sleepsec": 59
-	}, {
-		"wakehour": 0,
-		"wakemin": 0,
-		"wakesec": 0,
-		"sleephour": 23,
-		"sleepmin": 59,
-		"sleepsec": 59
-	}, {
-		"wakehour": 0,
-		"wakemin": 0,
-		"wakesec": 0,
-		"sleephour": 23,
-		"sleepmin": 59,
-		"sleepsec": 59
-	}, {
-		"wakehour": 0,
-		"wakemin": 0,
-		"wakesec": 0,
-		"sleephour": 23,
-		"sleepmin": 59,
-		"sleepsec": 59
-	}, {
-		"wakehour": 0,
-		"wakemin": 0,
-		"wakesec": 0,
-		"sleephour": 23,
-		"sleepmin": 59,
-		"sleepsec": 59
-	}, {
-		"wakehour": 0,
-		"wakemin": 0,
-		"wakesec": 0,
-		"sleephour": 23,
-		"sleepmin": 59,
-		"sleepsec": 59
-	}, {
-		"wakehour": 0,
-		"wakemin": 0,
-		"wakesec": 0,
-		"sleephour": 23,
-		"sleepmin": 59,
-		"sleepsec": 59
-	}]
+	"name": "Fixture",
+	"type": "elevator",
+	"relay_count": 8,
+	"floors": [
+		{
+			"floor": "floor1",
+			"relay": 0
+		},
+		{
+			"floor": "floor2",
+			"relay": 1
+		},
+		{
+			"floor": "floor3",
+			"relay": 2
+		},
+		{
+			"floor": "floor4",
+			"relay": 3
+		},
+		{
+			"floor": "floor5",
+			"relay": 4
+		},
+		{
+			"floor": "floor6",
+			"relay": 5
+		},
+		{
+			"floor": "floor7",
+			"relay": 6
+		},
+		{
+			"floor": "floor8",
+			"relay": 7
+		}
+	]
 }
