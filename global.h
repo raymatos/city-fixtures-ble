@@ -15,17 +15,25 @@
 #include "src/ESPAsyncWebServer.h"
 #include "src/FSM.h"
 
-enum DeviceType
+typedef enum
 {
     FLOOR,
     ELEVATOR,
-};
+} DeviceMode;
+
+typedef struct
+{
+    char description[16];
+    uint8_t channel;
+} FloorRelay;
 
 struct Config
 {
-    char identifier[32];
-    uint8_t mode;
-    //
+    char identifier[32]; // BLE device name
+    DeviceMode mode;     // Device type
+
+    uint8_t relay_count;
+    FloorRelay relays[32];
 };
 
 extern Config config;

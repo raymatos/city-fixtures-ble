@@ -1,39 +1,135 @@
 {
 	"name": "Fixture",
-	"type": "elevator",
+	"type": "floor",
 	"relay_count": 8,
 	"floors": [
 		{
 			"floor": "floor1",
-			"relay": 0
+			"channel": 0
 		},
 		{
 			"floor": "floor2",
-			"relay": 1
+			"channel": 1
 		},
 		{
 			"floor": "floor3",
-			"relay": 2
+			"channel": 2
 		},
 		{
 			"floor": "floor4",
-			"relay": 3
+			"channel": 3
 		},
 		{
 			"floor": "floor5",
-			"relay": 4
+			"channel": 4
 		},
 		{
 			"floor": "floor6",
-			"relay": 5
+			"channel": 5
 		},
 		{
 			"floor": "floor7",
-			"relay": 6
+			"channel": 6
 		},
 		{
 			"floor": "floor8",
-			"relay": 7
+			"channel": 7
+		},
+		{
+			"floor": "floor7",
+			"channel": 8
+		},
+		{
+			"floor": "floor8",
+			"channel": 9
+		},
+		{
+			"floor": "floor7",
+			"channel": 10
+		},
+		{
+			"floor": "floor8",
+			"channel": 11
+		},
+		{
+			"floor": "floor7",
+			"channel": 12
+		},
+		{
+			"floor": "floor8",
+			"channel": 13
+		},
+		{
+			"floor": "floor7",
+			"channel": 14
+		},
+		{
+			"floor": "floor8",
+			"channel": 15
+		},
+		{
+			"floor": "floor7",
+			"channel": 16
+		},
+		{
+			"floor": "floor8",
+			"channel": 17
+		},
+		{
+			"floor": "floor7",
+			"channel": 18
+		},
+		{
+			"floor": "floor8",
+			"channel": 19
+		},
+		{
+			"floor": "floor7",
+			"channel": 20
+		},
+		{
+			"floor": "floor8",
+			"channel": 21
+		},
+		{
+			"floor": "floor7",
+			"channel": 22
+		},
+		{
+			"floor": "floor8",
+			"channel": 23
+		},
+		{
+			"floor": "floor7",
+			"channel": 24
+		},
+		{
+			"floor": "floor8",
+			"channel": 25
+		},
+		{
+			"floor": "floor7",
+			"channel": 26
+		},
+		{
+			"floor": "floor8",
+			"channel": 27
+		},
+		{
+			"floor": "floor7",
+			"channel": 28
+		},
+		{
+			"floor": "floor8",
+			"channel": 29
+		},
+		{
+			"floor": "floor7",
+			"channel": 30
+		},
+		{
+			"floor": "floor8",
+			"channel": 31
 		}
 	]
 }
