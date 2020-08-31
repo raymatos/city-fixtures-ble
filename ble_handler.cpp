@@ -41,20 +41,31 @@ class ConfigurationCallback : public BLECharacteristicCallbacks
 
         if (value.length() > 0)
         {
-            Serial.println("*********");
-            Serial.print("New value: ");
-            for (int i = 0; i < value.length(); i++)
-                Serial.print(value[i]);
-
-            Serial.println();
-            Serial.println("*********");
+            if (parseWriteConfig(value.c_str()))
+            {
+                debugI("Will reboot in order to apply modified configuaration");
+                ESP.reset();
+            }
         }
     }
 
     void onRead(BLECharacteristic *pCharacteristic)
     {
+        DynamicJsonDocument doc(1024);
+        doc["mode"] = config.mode;
+        doc["name"] = config.identifier;
+        doc["relay_count"] = config.relay_count;
 
-        pCharacteristic->setValue("1234567890");
+        JsonArray relays = doc.createNestedArray("relays");
+        for (uint8_t idx = 0; idx < config.relay_count; idx++)
+        {
+            JsonObject relay = relays.createNestedObject();
+            relay["desc"] = config.relays[idx].description;
+            relay["channel"] = config.relays[idx].channel;
+        }
+        char configJson[1024];
+        serializeJson(doc, configJson);
+        pCharacteristic->setValue((uint8_t *)configJson, strlen(configJson));
     }
 };
 
@@ -63,17 +74,9 @@ class ForceRelayCallback : public BLECharacteristicCallbacks
     void onWrite(BLECharacteristic *pCharacteristic)
     {
         std::string value = pCharacteristic->getValue();
-
         if (value.length() > 0)
         {
-            Serial.println("*********");
-            Serial.print("New value: ");
-            for (int i = 0; i < value.length(); i++)
-                Serial.print(value[i]);
-
-            Serial.println();
-            Serial.println("*********");
-        }
+                }
     }
 };
 
@@ -110,7 +113,7 @@ class SystemTimeCallback : public BLECharacteristicCallbacks
 void init_ble_service()
 {
     // Create the BLE Device
-    BLEDevice::init("ESP32");
+    BLEDevice::init(config.identifier);
 
     // Create the BLE Server
     pServer = BLEDevice::createServer();

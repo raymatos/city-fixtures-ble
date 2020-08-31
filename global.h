@@ -53,3 +53,4 @@ void loadFSConfig();
 void saveFSConfig();
 
 String getSplitString(String data, char separator, int index);
+bool parseWriteConfig(const char *payload);

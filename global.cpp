@@ -42,7 +42,7 @@ void loadFSConfig()
         if (configFile)
         {
             //
-            DynamicJsonDocument doc(4096);
+            DynamicJsonDocument doc(2048);
             // Deserialize the JSON document
             DeserializationError error = deserializeJson(doc, configFile);
             if (error)
@@ -96,7 +96,7 @@ void loadFSConfig()
 
 void saveFSConfig()
 {
-    StaticJsonDocument<1024> doc;
+    DynamicJsonDocument doc(2048);
     doc["mode"] = config.mode;
     doc["name"] = config.identifier;
     doc["relay_count"] = config.relay_count;
@@ -139,4 +139,55 @@ String getSplitString(String data, char separator, int index)
     }
 
     return found > index ? data.substring(strIndex[0], strIndex[1]) : "";
+}
+
+bool parseWriteConfig(const char *payload)
+{
+    bool shouldReboot = false;
+    char json[512];
+    strcpy(json, payload);
+    StaticJsonDocument<1024> doc;
+    DeserializationError error = deserializeJson(doc, json);
+    if (error)
+    {
+        debugE("Failed to parse configuration write payload");
+        return false;
+    }
+    if (doc.containsKey("mode"))
+    {
+        config.mode = doc["mode"];
+        debugA("Mode changed to %s", config.mode ? "Elevator" : "Floor");
+        if (config.mode == FLOOR)
+        {
+            config.relay_count = 2;
+        }
+        shouldReboot = true;
+    }
+
+    if (doc.containsKey("name"))
+    {
+        config.identifier = doc["name"];
+        debugA("BLE device name has changed to %s", config.identifier);
+        shouldReboot = true;
+    }
+
+    if (doc.containsKey("relay_count"))
+    {
+        config.relay_count = doc["relay_count"];
+        shouldReboot = true;
+    }
+
+    if (doc.containsKey("relays"))
+    {
+        JsonArray relays = doc["relays"].as<JsonArray>();
+        for (JsonObject obj : relays)
+        {
+            const char *description = obj["desc"];
+            uint8_t channel = obj["channel"];
+            strcpy(config.relays[channel].description, description);
+        }
+    }
+
+    saveFSConfig();
+    return shouldReboot;
 }
