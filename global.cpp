@@ -12,6 +12,7 @@
 #include <FS.h>
 #include <SPIFFS.h>
 #include <ArduinoJson.h>
+#include "src/SerialDebug/SerialDebug.h"
 
 // Unique id of ESP32 core
 char chip_serial[30];
@@ -190,4 +191,27 @@ bool parseWriteConfig(const char *payload)
 
     saveFSConfig();
     return shouldReboot;
+}
+
+void parseForceRelay(const char *payload)
+{
+    char json[256];
+    strcpy(json, payload);
+    StaticJsonDocument<512> doc;
+    DeserializationError error = deserializeJson(doc, json);
+    if (error)
+    {
+        debugE("Failed to parse forcerelay write payload");
+        return;
+    }
+
+    JsonArray relays = doc.to<JsonArray>();
+    for (JsonObject obj : relays)
+    {
+        const char *description = obj["desc"];
+        const char *command = obj["command"];
+        String command_str = String(command);
+        uint8_t channel = obj["channel"];
+        forceRelay(channel, command_str == "on");
+    }
 }

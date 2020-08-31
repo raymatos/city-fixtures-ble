@@ -11,7 +11,6 @@
 #pragma once
 #include <Arduino.h>
 #include "string.h"
-#include "src/SerialDebug/SerialDebug.h"
 #include "src/ESPAsyncWiFiManager.h"
 #include "src/ESPAsyncWebServer.h"
 #include "src/FSM.h"
@@ -54,3 +53,4 @@ void saveFSConfig();
 
 String getSplitString(String data, char separator, int index);
 bool parseWriteConfig(const char *payload);
+void parseForceRelay(const char *payload);

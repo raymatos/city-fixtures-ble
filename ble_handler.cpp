@@ -76,7 +76,8 @@ class ForceRelayCallback : public BLECharacteristicCallbacks
         std::string value = pCharacteristic->getValue();
         if (value.length() > 0)
         {
-                }
+            parseForceRelay(value.c_str());
+        }
     }
 };
 
