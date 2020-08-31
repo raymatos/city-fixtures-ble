@@ -170,19 +170,13 @@ void ble_handler_loop()
         if (millis() - notify_time >= 500)
         {
             notify_time = millis();
-
-            StaticJsonDocument<1024> doc;
-            JsonArray relays = doc.to<JsonArray>();
-            uint32_t value = 0x00;
+            String payload = "";
             for (uint8_t idx = 0; idx < config.relay_count; idx++)
             {
-                JsonObject relay = relays.createNestedObject();
-                relay["desc"] = config.relays[idx].description;
-                relay["status"] = "on";
+                payload += readRelay(config.relays[idx].channel) ? "1" : "0";
+                payload += ",";
             }
-            char payload[512];
-            serializeJson(doc, payload);
-            pPeripheralNotifyCharacteristic->setValue((uint8_t *)payload, strlen(payload));
+            pPeripheralNotifyCharacteristic->setValue((uint8_t *)payload.c_str(), payload.length());
             pPeripheralNotifyCharacteristic->notify();
         }
 
