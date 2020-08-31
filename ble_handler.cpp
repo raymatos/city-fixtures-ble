@@ -10,7 +10,6 @@
 #include "src/SerialDebug/SerialDebug.h"
 #include "global.h"
 #include <ArduinoJson.h>
-#include "src/SerialDebug/SerialDebug.h"
 
 BLEServer *pServer = NULL;
 BLECharacteristic *pPeripheralNotifyCharacteristic;
@@ -83,16 +82,27 @@ class SystemTimeCallback : public BLECharacteristicCallbacks
     void onWrite(BLECharacteristic *pCharacteristic)
     {
         std::string value = pCharacteristic->getValue();
-
         if (value.length() > 0)
         {
-            Serial.println("*********");
-            Serial.print("New value: ");
-            for (int i = 0; i < value.length(); i++)
-                Serial.print(value[i]);
+            String formattedDate = String(value.c_str());
 
-            Serial.println();
-            Serial.println("*********");
+            // Extract date
+            int splitT = formattedDate.indexOf("T");
+            String dateStamp = formattedDate.substring(0, splitT);
+
+            // Extract time
+            String timeStamp = formattedDate.substring(splitT + 1, formattedDate.length() - 1);
+
+            struct tm tm;
+            tm.tm_year = getSplitString(dateStamp, '-', 0).toInt() - 1900;
+            tm.tm_mon = getSplitString(dateStamp, '-', 1).toInt();
+            tm.tm_mday = getSplitString(dateStamp, '-', 2).toInt();
+            tm.tm_hour = getSplitString(timeStamp, ':', 0).toInt();
+            tm.tm_min = getSplitString(timeStamp, ':', 1).toInt();
+            tm.tm_sec = 0;
+            time_t t = mktime(&tm);
+            struct timeval now = {.tv_sec = t};
+            settimeofday(&now, NULL);
         }
     }
 };
@@ -130,7 +140,6 @@ void init_ble_service()
     pSystemTimeCharacteristic = pService->createCharacteristic(
         FORCERELAY_CHARACTERISTIC_UUID,
         BLECharacteristic::PROPERTY_WRITE |
-            BLECharacteristic::PROPERTY_READ |
             BLECharacteristic::PROPERTY_NOTIFY);
     pSystemTimeCharacteristic->setCallbacks(new SystemTimeCallback());
 
@@ -167,11 +176,8 @@ void ble_handler_loop()
                 relay["desc"] = config.relays[idx].description;
                 relay["status"] = "on";
             }
-
             char payload[512];
             serializeJson(doc, payload);
-            debugA("Payload: %s", payload);
-
             pPeripheralNotifyCharacteristic->setValue((uint8_t *)payload, strlen(payload));
             pPeripheralNotifyCharacteristic->notify();
         }

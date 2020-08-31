@@ -10,6 +10,7 @@
 
 #pragma once
 #include <Arduino.h>
+#include "string.h"
 #include "src/SerialDebug/SerialDebug.h"
 #include "src/ESPAsyncWiFiManager.h"
 #include "src/ESPAsyncWebServer.h"
@@ -50,3 +51,5 @@ extern const int32_t daylightOffset_sec;
 void readChipId();
 void loadFSConfig();
 void saveFSConfig();
+
+String getSplitString(String data, char separator, int index);
