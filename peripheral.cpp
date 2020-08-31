@@ -24,7 +24,7 @@ void init_peripherals()
     }
 }
 
-bool driveRelay(uint8_t channel, bool signal)
+bool forceRelay(uint8_t channel, bool signal)
 {
     if (channel > 0 && channel < 9)
     {

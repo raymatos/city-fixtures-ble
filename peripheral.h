@@ -25,5 +25,5 @@
 
 //
 void init_peripherals(uint8_t device_type, uint8_t relay_count);
-bool driveRelay(uint8_t channel, bool signal);
+bool forceRelay(uint8_t channel, bool signal);
 bool readRelay(uint8_t channel);
