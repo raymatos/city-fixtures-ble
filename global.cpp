@@ -19,9 +19,6 @@ const int32_t gmtOffset_sec = 3600 * 10;
 const int32_t daylightOffset_sec = 0;
 struct Config config;
 
-/**
- * 
-*/
 void readChipId()
 {
     // Get unique chip id of ESP32 core
@@ -40,16 +37,16 @@ void loadFSConfig()
     {
         // File exists, reading and loading
         File configFile = SPIFFS.open("/config.json", "r");
-        debugA("Loading system configuration ...\r\n");
+        debugA("Loading system configuration ...");
 
         if (configFile)
         {
             //
-            StaticJsonDocument<2048> doc;
+            DynamicJsonDocument doc(4096);
             // Deserialize the JSON document
             DeserializationError error = deserializeJson(doc, configFile);
             if (error)
-                debugE("Failed to read configuration file, using default configuration \r\n");
+                debugE("Failed to read configuration file, using default configuration");
 
             config.mode = doc["mode"] | FLOOR;
             if (config.mode == FLOOR)
@@ -61,7 +58,6 @@ void loadFSConfig()
                 config.relay_count = doc["relay_count"] | 8;
             }
 
-            //
             const char *identifier = doc["name"] | (config.mode == FLOOR ? DEFAULT_FLOOR_NAME : DEFAULT_ELEVATOR_NAME);
             strcpy(config.identifier, identifier);
 
@@ -70,20 +66,21 @@ void loadFSConfig()
             for (JsonObject obj : relays)
             {
                 const char *description = obj["desc"];
+                uint8_t channel = obj["channel"];
                 strcpy(config.relays[index].description, description);
-                config.relays[index].channel = (uint8_t)obj["channel"];
+                config.relays[index].channel = obj["channel"];
                 index++;
             }
             configFile.close();
         }
         else
         {
-            debugE("Fatal error found to read configuration \r\n");
+            debugE("Fatal error found to read configuration");
         }
     }
     else
     {
-        debugE("No found config file in SPIFFS, will save default config\r\n");
+        debugE("No found config file in SPIFFS, will save default config");
 
         config.mode = FLOOR;
         config.relay_count = 2;

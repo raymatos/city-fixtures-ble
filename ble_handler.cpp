@@ -9,6 +9,8 @@
 #include "ble_handler.h"
 #include "src/SerialDebug/SerialDebug.h"
 #include "global.h"
+#include <ArduinoJson.h>
+#include "src/SerialDebug/SerialDebug.h"
 
 BLEServer *pServer = NULL;
 BLECharacteristic *pPeripheralNotifyCharacteristic;
@@ -52,15 +54,31 @@ class ConfigurationCallback : public BLECharacteristicCallbacks
 
     void onRead(BLECharacteristic *pCharacteristic)
     {
-        // struct timeval tv;
-        // gettimeofday(&tv, nullptr);
-        // std::ostringstream os;
-        // os << "Time: " << tv.tv_sec;
+
         pCharacteristic->setValue("1234567890");
     }
 };
 
 class ForceRelayCallback : public BLECharacteristicCallbacks
+{
+    void onWrite(BLECharacteristic *pCharacteristic)
+    {
+        std::string value = pCharacteristic->getValue();
+
+        if (value.length() > 0)
+        {
+            Serial.println("*********");
+            Serial.print("New value: ");
+            for (int i = 0; i < value.length(); i++)
+                Serial.print(value[i]);
+
+            Serial.println();
+            Serial.println("*********");
+        }
+    }
+};
+
+class SystemTimeCallback : public BLECharacteristicCallbacks
 {
     void onWrite(BLECharacteristic *pCharacteristic)
     {
@@ -102,6 +120,7 @@ void init_ble_service()
         CONFIGURATION_CHARACTERISTIC_UUID,
         BLECharacteristic::PROPERTY_READ |
             BLECharacteristic::PROPERTY_WRITE);
+    pConfigurationCharacteristic->setCallbacks(new ConfigurationCallback());
 
     pForceRelayCharacteristic = pService->createCharacteristic(
         FORCERELAY_CHARACTERISTIC_UUID,
@@ -113,6 +132,8 @@ void init_ble_service()
         BLECharacteristic::PROPERTY_WRITE |
             BLECharacteristic::PROPERTY_READ |
             BLECharacteristic::PROPERTY_NOTIFY);
+    pSystemTimeCharacteristic->setCallbacks(new SystemTimeCallback());
+
     // Create a BLE Descriptor
     pSystemTimeCharacteristic->addDescriptor(new BLE2902());
 
@@ -135,13 +156,40 @@ void ble_handler_loop()
         static uint32_t notify_time = millis();
         if (millis() - notify_time >= 500)
         {
-            static uint16_t value = 10;
-            value++;
             notify_time = millis();
-            pPeripheralNotifyCharacteristic->setValue((uint8_t *)&value, sizeof(value));
+
+            StaticJsonDocument<1024> doc;
+            JsonArray relays = doc.to<JsonArray>();
+            uint32_t value = 0x00;
+            for (uint8_t idx = 0; idx < config.relay_count; idx++)
+            {
+                JsonObject relay = relays.createNestedObject();
+                relay["desc"] = config.relays[idx].description;
+                relay["status"] = "on";
+            }
+
+            char payload[512];
+            serializeJson(doc, payload);
+            debugA("Payload: %s", payload);
+
+            pPeripheralNotifyCharacteristic->setValue((uint8_t *)payload, strlen(payload));
             pPeripheralNotifyCharacteristic->notify();
         }
+
+        static uint32_t datetime_notify_time = millis();
+        if (millis() - datetime_notify_time >= 5000)
+        {
+            struct tm tmstruct;
+            getLocalTime(&tmstruct);
+            char payload[20];
+            sprintf(payload, "%d-%02d-%02dT%02d:%02d", tmstruct.tm_year + 1900, tmstruct.tm_mon + 1, tmstruct.tm_mday,
+                    tmstruct.tm_hour, tmstruct.tm_min);
+            pSystemTimeCharacteristic->setValue((uint8_t *)payload, strlen(payload));
+            pSystemTimeCharacteristic->notify();
+            datetime_notify_time = millis();
+        }
     }
+
     // // disconnecting
     // if (!deviceConnected && oldDeviceConnected)
     // {
@@ -150,7 +198,7 @@ void ble_handler_loop()
     //     Serial.println("start advertising");
     //     oldDeviceConnected = deviceConnected;
     // }
-    // connecting
+
     if (deviceConnected && !oldDeviceConnected)
     {
         // do stuff here on connecting

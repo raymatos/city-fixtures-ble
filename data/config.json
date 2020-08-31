@@ -1,7 +1,7 @@
 {
 	"name": "Fixture",
 	"mode": 0,
-	"relay_count": 8,
+	"relay_count": 2,
 	"relays": [
 		{
 			"desc": "floor1",
@@ -12,7 +12,7 @@
 			"channel": 1
 		},
 		{
-			"floor": "floor3",
+			"desc": "floor3",
 			"channel": 2
 		},
 		{
@@ -64,7 +64,7 @@
 			"channel": 14
 		},
 		{
-			"floor": "floor8",
+			"desc": "floor8",
 			"channel": 15
 		},
 		{
