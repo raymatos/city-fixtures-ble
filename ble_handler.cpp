@@ -44,7 +44,7 @@ class ConfigurationCallback : public BLECharacteristicCallbacks
             if (parseWriteConfig(value.c_str()))
             {
                 debugI("Will reboot in order to apply modified configuaration");
-                ESP.reset();
+                ESP.restart();
             }
         }
     }
