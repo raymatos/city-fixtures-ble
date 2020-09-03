@@ -5,9 +5,8 @@
 
 ## Components
 
-- Controller (ESP32)
-- Relay Module
-- Mobile Application
+- Controller (*ESP32*)
+- Relay Module (_2ch/8ch/16ch(including gpio expander)/32ch((including gpio expander)_)
 
 ## Functionalities
 
