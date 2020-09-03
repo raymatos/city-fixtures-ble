@@ -33,19 +33,52 @@ _The controller should be able to be setup as “Elevator” or “Floor”_
 
 - Configuration characteristic: `0f7e0003-b5a3-f393-e0a9-e50e24dcca9e`
 
+    - read
+        
+
 - Force realy characteristic: `0f7e0004-b5a3-f393-e0a9-e50e24dcca9e"`
+
+    - write
+
+        *We could force single or multiple relays via this characteristic*
+
+        example write value:
+        ```
+        [
+            {
+                "desc": "floor1",
+                "command": "on"
+            },
+            {
+                "desc": "floor2",
+                "command": "off"
+            },
+            ... 
+            {
+                "desc": "floor5",
+                "command": "off"
+            }
+        ]
+        ```
+
 
 - Peripheral charateristic: `0f7e0002-b5a3-f393-e0a9-e50e24dcca9e`
     
     - notify
         
-        *Every 4sec, it notifies current sensor variables etc.*
+        *Every 1sec, it notifies current status of relays as json array*
+
+        *example notify value: if floor module has 2 counts of relay and 1st relay is turned on, 2nd relay is turned off*
+        ```
+        1,0, 
+        ```
 
 - Systemtime characteristic: `0d7e0006-b5a3-f393-e0a9-e50e24dcca9e`
-    - read
+    - notify
         
         *Every 5sec, it will notify system date & time*
 
+        example notify value:
         ```
         2020-09-01T09:08
         ```
@@ -54,6 +87,7 @@ _The controller should be able to be setup as “Elevator” or “Floor”_
 
         *You could change system date & time by writing value for this characteristic*
 
+        example write value:
         ```
         2020-09-01T09:08
         ```
