@@ -25,8 +25,9 @@ _The controller should be able to be setup as “Elevator” or “Floor”_
 - Set the name of the floor
 - Push the name of the Floor and available options
 
-V2 -
-Option to add a LCD screen with a QR code - this code changes every 5 mins, the idea here is that the user will need to scan the QR code to gain access to the floor or elevator controller.
+### BLE Service & Characteristics
+
+- Serveri
 
 ## ESP32 Firmware
 
@@ -37,4 +38,9 @@ Option to add a LCD screen with a QR code - this code changes every 5 mins, the 
 ### Additional libraries
 - ArduinoJson
 
-### BLE Service & Characteristics
+
+**********
+
+## V2
+
+Option to add a LCD screen with a QR code - this code changes every 5 mins, the idea here is that the user will need to scan the QR code to gain access to the floor or elevator controller.
