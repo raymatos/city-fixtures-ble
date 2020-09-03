@@ -28,9 +28,13 @@ _The controller should be able to be setup as “Elevator” or “Floor”_
 V2 -
 Option to add a LCD screen with a QR code - this code changes every 5 mins, the idea here is that the user will need to scan the QR code to gain access to the floor or elevator controller.
 
-
 ## ESP32 Firmware
 
+### Dev environment
+- Arduino IDE 1.8.12 or later 
+- ESP32 arduino core latest stable version 
+
 ### Additional libraries
-    
 - ArduinoJson
+
+### BLE Service & Characteristics
