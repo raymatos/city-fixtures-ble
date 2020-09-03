@@ -34,7 +34,70 @@ _The controller should be able to be setup as “Elevator” or “Floor”_
 - Configuration characteristic: `0f7e0003-b5a3-f393-e0a9-e50e24dcca9e`
 
     - read
-        
+
+        *We could read current configuration setting for unit*
+
+        example read value: when device has configured as floor and has 2 counts of relays.
+
+        ```
+        {
+            "name": "Fixture",
+            "mode": 0,
+            "relay_count": 2,
+            "relays": [
+                {
+                    "desc": "floor1",
+                    "channel": 0
+                },
+                {
+                    "desc": "floor2",
+                    "channel": 1
+                }
+            ]
+        }        
+        ```        
+
+        **name**: *BLE advertising device name* 
+
+        **mode**: *Fixture configuration type*
+
+            0: Floor  
+            1: Elevator  
+
+        **relay_count**: *Relay count managing in unit*
+
+            Default 2 for Floor , Default 8 for Elevator  
+
+        **relays**: *Array of relays*
+
+            desc: Description for relay such as "A-Z" or "1-16"
+            channel: Relay layout number on device, for Floor 1 / 2, for Elevator 8 / 16 / 32.   
+
+    - read
+
+        *We could read current configuration setting for unit*
+
+        example read value: when device has configured as floor and has 2 counts of relays.
+
+        ```
+        {
+            "name": "Fixture",
+            "mode": 0,
+            "relay_count": 2,
+            "relays": [
+                {
+                    "desc": "floor1",
+                    "channel": 0
+                },
+                {
+                    "desc": "floor2",
+                    "channel": 1
+                }
+            ]
+        }        
+        ```        
+
+
 
 - Force realy characteristic: `0f7e0004-b5a3-f393-e0a9-e50e24dcca9e"`
 
