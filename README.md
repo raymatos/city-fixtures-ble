@@ -26,10 +26,37 @@ _The controller should be able to be setup as “Elevator” or “Floor”_
 - Push the name of the Floor and available options
 
 ### BLE Service & Characteristics
-- BLE device name: default `Fixture`
+
+- BLE device name: default `Fixture` able to change via characteristic
 
 - Fixture BLE Service: ```0f7e0001-3e26-454e-9669-1a8b67b52161```
 
+- Configuration characteristic: `0f7e0003-b5a3-f393-e0a9-e50e24dcca9e`
+
+- Force realy characteristic: `0f7e0004-b5a3-f393-e0a9-e50e24dcca9e"`
+
+- Peripheral charateristic: `0f7e0002-b5a3-f393-e0a9-e50e24dcca9e`
+    
+    - notify
+        
+        *Every 4sec, it notifies current sensor variables etc.*
+
+- Systemtime characteristic: `0d7e0006-b5a3-f393-e0a9-e50e24dcca9e`
+    - read
+        
+        *Every 5sec, it will notify system date & time*
+
+        ```
+        2020-09-01T09:08
+        ```
+
+    - write
+
+        *You could change system date & time by writing value for this characteristic*
+
+        ```
+        2020-09-01T09:08
+        ```
 
 ## ESP32 Firmware
 
