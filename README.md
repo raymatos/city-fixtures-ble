@@ -26,8 +26,10 @@ _The controller should be able to be setup as “Elevator” or “Floor”_
 - Push the name of the Floor and available options
 
 ### BLE Service & Characteristics
+- BLE device name: default `Fixture`
 
-- Serveri
+- Fixture BLE Service: ```0f7e0001-3e26-454e-9669-1a8b67b52161```
+
 
 ## ESP32 Firmware
 
