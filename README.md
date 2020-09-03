@@ -107,16 +107,16 @@ _The controller should be able to be setup as “Elevator” or “Floor”_
         ```
         [
             {
-                "desc": "floor1",
+                "desc": "floorA",
                 "command": "on"
             },
             {
-                "desc": "floor2",
+                "desc": "floorB",
                 "command": "off"
             },
             ... 
             {
-                "desc": "floor5",
+                "desc": "floorF",
                 "command": "off"
             }
         ]
