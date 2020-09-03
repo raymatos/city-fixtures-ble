@@ -161,6 +161,10 @@ _The controller should be able to be setup as “Elevator” or “Floor”_
 
     https://github.com/espressif/arduino-esp32/blob/master/docs/arduino-ide/boards_manager.md
 
+- Install arduino plugin to install html data to SPIFFS of ESP32
+
+    https://github.com/me-no-dev/arduino-esp32fs-plugin 
+
 ### Additional libraries
 - ArduinoJson
     
@@ -176,6 +180,9 @@ _**It is mandatory to choose 2MB flash size since we should use BLE + WiFi stack
 - Compile & Upload sketch to ESP32 module 
 
 - Upload data html template files to SPIFFS
+
+![Sketch data](images/upload_template.png)
+
 
 **********
 
