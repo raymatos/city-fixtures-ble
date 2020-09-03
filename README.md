@@ -159,9 +159,23 @@ _The controller should be able to be setup as “Elevator” or “Floor”_
 - Arduino IDE 1.8.12 or later 
 - ESP32 arduino core latest stable version 
 
+    https://github.com/espressif/arduino-esp32/blob/master/docs/arduino-ide/boards_manager.md
+
 ### Additional libraries
 - ArduinoJson
+    
+    https://github.com/bblanchon/ArduinoJson
 
+### Compilation and Upload sketch
+- Choose ESP32 Dev and partition schema as following figure
+
+![Choose Board](images/partition_schema.png)
+
+_**It is mandatory to choose 2MB flash size since we should use BLE + WiFi stack at the same time**_
+
+- Compile & Upload sketch to ESP32 module 
+
+- Upload data html template files to SPIFFS
 
 **********
 
