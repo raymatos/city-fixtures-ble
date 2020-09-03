@@ -46,11 +46,11 @@ _The controller should be able to be setup as “Elevator” or “Floor”_
             "relay_count": 2,
             "relays": [
                 {
-                    "desc": "floor1",
+                    "desc": "floorA",
                     "channel": 0
                 },
                 {
-                    "desc": "floor2",
+                    "desc": "floorZ",
                     "channel": 1
                 }
             ]
@@ -75,10 +75,9 @@ _The controller should be able to be setup as “Elevator” or “Floor”_
 
     - read
 
-        *We could read current configuration setting for unit*
+        *We could modify current configuration setting for unit*
 
-        example read value: when device has configured as floor and has 2 counts of relays.
-
+        example write value: 
         ```
         {
             "name": "Fixture",
@@ -86,18 +85,17 @@ _The controller should be able to be setup as “Elevator” or “Floor”_
             "relay_count": 2,
             "relays": [
                 {
-                    "desc": "floor1",
+                    "desc": "A",
                     "channel": 0
                 },
                 {
-                    "desc": "floor2",
+                    "desc": "B",
                     "channel": 1
                 }
             ]
         }        
         ```        
-
-
+        _Write value could have one or more fields such as **name**, **mode**, **relay_count**, **relays**_
 
 - Force realy characteristic: `0f7e0004-b5a3-f393-e0a9-e50e24dcca9e"`
 
