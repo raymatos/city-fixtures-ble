@@ -858,7 +858,7 @@ void AsyncWiFiManager::handleRoot(AsyncWebServerRequest *request)
     page += "<h1>";
     page += _apName;
     page += "</h1>";
-    page += F("<h3>Chicken Coop Opener</h3>");
+    page += F("<h3>City Fixtures</h3>");
     page += FPSTR(HTTP_PORTAL_OPTIONS);
     page += _customOptionsElement;
     page += FPSTR(HTTP_END);

@@ -167,7 +167,11 @@ bool parseWriteConfig(const char *payload)
 
     if (doc.containsKey("name"))
     {
+<<<<<<< HEAD
         strcpy(config.identifier, doc["name"]);
+=======
+       strcpy(config.identifier, doc["name"]);
+>>>>>>> 5ce1c1211c3f08df74bad423e04acc268c63fcba
         debugA("BLE device name has changed to %s", config.identifier);
         shouldReboot = true;
     }
