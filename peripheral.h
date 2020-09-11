@@ -24,6 +24,6 @@
 #define Relay8_Pin 19
 
 //
-void init_peripherals(uint8_t device_type, uint8_t relay_count);
+void init_peripherals();
 bool forceRelay(uint8_t channel, bool signal);
 bool readRelay(uint8_t channel);

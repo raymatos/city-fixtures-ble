@@ -10,6 +10,7 @@
 #include "src/SerialDebug/SerialDebug.h"
 #include "global.h"
 #include <ArduinoJson.h>
+#include "peripheral.h"
 
 BLEServer *pServer = NULL;
 BLECharacteristic *pPeripheralNotifyCharacteristic;
