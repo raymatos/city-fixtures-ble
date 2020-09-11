@@ -43,7 +43,7 @@ void loadFSConfig()
         if (configFile)
         {
             //
-            DynamicJsonDocument doc(2048);
+            DynamicJsonDocument doc(4096);
             // Deserialize the JSON document
             DeserializationError error = deserializeJson(doc, configFile);
             if (error)
