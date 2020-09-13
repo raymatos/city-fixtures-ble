@@ -34,6 +34,8 @@ void initConfigWebService()
     sprintf(ap_ssid, "%s-%s", SOFTAP_SSID_PREFIX, chip_serial);
     wifiManager.startConfigPortalModeless(ap_ssid, SOFTAP_PASSWORD);
 
+    server.addHandler(new SPIFFSEditor(SPIFFS, HTTP_EDIT_USER, HTTP_EDIT_PASS));
+
     server.serveStatic("/", SPIFFS, "/").setDefaultFile("index.htm");
     server.serveStatic("/monitor", SPIFFS, "/index.htm");
     server.serveStatic("/upload", SPIFFS, "/upload.htm");
@@ -153,8 +155,6 @@ void initConfigWebService()
         if (index + len == total)
             Serial.printf("BodyEnd: %u\n", total);
     });
-
-    server.addHandler(new SPIFFSEditor(SPIFFS, HTTP_EDIT_USER, HTTP_EDIT_PASS));
 }
 
 void configWebProc()
