@@ -79,8 +79,8 @@ void setup()
     // Init peripherals
     init_peripherals();
 
-    // Init BLE handler
-    init_ble_service();
+//    // Init BLE handler
+//    init_ble_service();
 }
 
 void loop()
@@ -89,5 +89,5 @@ void loop()
     configWebProc();
 
     //
-    ble_handler_loop();
+//    ble_handler_loop();
 }
