@@ -1,6 +1,7 @@
 {
 	"name": "Fixture",
 	"mode": 0,
+	"location": 0,
 	"relay_count": 2,
 	"relays": [
 		{
