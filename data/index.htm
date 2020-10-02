@@ -47,18 +47,6 @@
     </header>
 
     <div class="jumbotron bg-light">
-      <div class="form-group row">
-        <label for="localtime" class="col-form-label col-sm-2 text-center">Date & Time:</label>
-        <div class="input-group col-sm-5">
-          <input type="datetime-local" class="form-control" id="localtime" disabled />
-        </div>
-        <div class="input-group col-sm-5">
-          <input type="datetime-local" class="form-control" id="settime" />
-          <div class="input-group-append">
-            <input type="button" class="input-group-text h4" id="update-time-btn" value="Update" />
-          </div>
-        </div>
-      </div>
 
       <div class="card card-default mt-3 mb-3">
         <div class="card-header h4">
@@ -68,7 +56,7 @@
           <div class="row form-inline">
             <div class="col-sm-4">
               <div class="form-group row form-inline">
-                <label for="blename" class="col-form-label col-sm-4 mt-2">Name:</label>
+                <label for="blename" class="col-form-label col-sm-4 mt-2">BLE Name:</label>
                 <div class="input-group col-sm-8">
                   <input type="text" class="form-control" id="blename" />
                   <div class="input-group-append">
@@ -121,27 +109,43 @@
               <thead>
                 <tr>
                   <th>Channel</th>
-                  <th>Identifier</th>
+                  <th>Floor</th>
                   <th>Status</th>
                 </tr>
               </thead>
               <tbody>
                 <tr class="">
-                  <td class="col-xs-3">John</td>
-                  <td class="col-xs-3">43</td>
-                  <td class="col-xs-6">School Teacher</td>
+                  <td class="col-xs-3">1</td>
+                  <td class="col-xs-3">
+                    <div class="input-group col-sm-8">
+                      <input type="text" class="form-control"/>
+                    </div>
+                  </td>
+                  <td class="col-xs-6"><input type="checkbox" data-toggle="toggle" data-size="sm" id="relay-mode"
+                      data-onstyle="success" data-offstyle="warning" data-on="Active" data-off="Off"
+                      data-style="ios" onchange="change_configuration('relay-mode')" /></td>
                 </tr>
                 <tr class="">
-                  <td class="col-xs-3">Tim</td>
-                  <td class="col-xs-3">52</td>
-                  <td class="col-xs-6">Plumber</td>
+                  <td class="col-xs-3">2</td>
+                  <td class="col-xs-3">
+                    <div class="input-group col-sm-8">
+                      <input type="text" class="form-control"/>
+                    </div>
+                  </td>
+                  <td class="col-xs-6"><input type="checkbox" data-toggle="toggle" data-size="sm" id="relay-mode"
+                      data-onstyle="success" data-offstyle="warning" data-on="Active" data-off="Off"
+                      data-style="ios" onchange="change_configuration('relay-mode')" /></td>
                 </tr>
                 <tr class="">
-                  <td class="col-xs-3">John</td>
-                  <td class="col-xs-3">43</td>
-                  <td class="col-xs-6"><input type="checkbox" data-toggle="toggle" data-size="sm" id="system-mode"
-                      data-onstyle="success" data-offstyle="warning" data-on="Automatic" data-off="Manual"
-                      data-style="ios" onchange="change_configuration('system-mode')" /></td>
+                  <td class="col-xs-3">3</td>
+                  <td class="col-xs-3">
+                    <div class="input-group col-sm-8">
+                      <input type="text" class="form-control"/>
+                    </div>
+                  </td>
+                  <td class="col-xs-6"><input type="checkbox" data-toggle="toggle" data-size="sm" id="relay-mode"
+                      data-onstyle="success" data-offstyle="warning" data-on="Active" data-off="Off"
+                      data-style="ios" onchange="change_configuration('relay-mode')" /></td>
                 </tr>
               </tbody>
             </table>
