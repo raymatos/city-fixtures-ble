@@ -8,9 +8,9 @@
 
 #include "ble_handler.h"
 #include "global.h"
+#include "peripheral.h"
 #include "src/SerialDebug/SerialDebug.h"
 #include <ArduinoJson.h>
-#include "peripheral.h"
 
 BLEServer *pServer = NULL;
 BLECharacteristic *pPeripheralNotifyCharacteristic;
@@ -21,39 +21,32 @@ BLECharacteristic *pSystemTimeCharacteristic;
 bool deviceConnected = false;
 bool oldDeviceConnected = false;
 
-class FixtureServerCallback : public BLEServerCallbacks
-{
+class FixtureServerCallback : public BLEServerCallbacks {
   void onConnect(BLEServer *pServer) { deviceConnected = true; };
 
   void onDisconnect(BLEServer *pServer) { deviceConnected = false; }
 };
 
-class ConfigurationCallback : public BLECharacteristicCallbacks
-{
-  void onWrite(BLECharacteristic *pCharacteristic)
-  {
+class ConfigurationCallback : public BLECharacteristicCallbacks {
+  void onWrite(BLECharacteristic *pCharacteristic) {
     std::string value = pCharacteristic->getValue();
 
-    if (value.length() > 0)
-    {
-      if (parseWriteConfig(value.c_str()))
-      {
+    if (value.length() > 0) {
+      if (parseWriteConfig(value.c_str())) {
         debugI("Will reboot in order to apply modified configuaration");
         ESP.restart();
       }
     }
   }
 
-  void onRead(BLECharacteristic *pCharacteristic)
-  {
+  void onRead(BLECharacteristic *pCharacteristic) {
     DynamicJsonDocument doc(1024);
     doc["mode"] = config.mode;
     doc["name"] = config.identifier;
     doc["relay_count"] = config.relay_count;
 
     JsonArray relays = doc.createNestedArray("relays");
-    for (uint8_t idx = 0; idx < config.relay_count; idx++)
-    {
+    for (uint8_t idx = 0; idx < config.relay_count; idx++) {
       JsonObject relay = relays.createNestedObject();
       relay["desc"] = config.relays[idx].description;
       relay["channel"] = config.relays[idx].channel;
@@ -64,25 +57,19 @@ class ConfigurationCallback : public BLECharacteristicCallbacks
   }
 };
 
-class ForceRelayCallback : public BLECharacteristicCallbacks
-{
-  void onWrite(BLECharacteristic *pCharacteristic)
-  {
+class ForceRelayCallback : public BLECharacteristicCallbacks {
+  void onWrite(BLECharacteristic *pCharacteristic) {
     std::string value = pCharacteristic->getValue();
-    if (value.length() > 0)
-    {
+    if (value.length() > 0) {
       parseForceRelay(value.c_str());
     }
   }
 };
 
-class SystemTimeCallback : public BLECharacteristicCallbacks
-{
-  void onWrite(BLECharacteristic *pCharacteristic)
-  {
+class SystemTimeCallback : public BLECharacteristicCallbacks {
+  void onWrite(BLECharacteristic *pCharacteristic) {
     std::string value = pCharacteristic->getValue();
-    if (value.length() > 0)
-    {
+    if (value.length() > 0) {
       String formattedDate = String(value.c_str());
 
       // Extract date
@@ -107,8 +94,7 @@ class SystemTimeCallback : public BLECharacteristicCallbacks
   }
 };
 
-void init_ble_service()
-{
+void init_ble_service() {
   // Create the BLE Device
   BLEDevice::init(config.identifier);
 
@@ -157,17 +143,16 @@ void init_ble_service()
   Serial.println("Waiting a client connection to notify...");
 }
 
-void ble_handler_loop()
-{
-  if (deviceConnected)
-  {
+void ble_stop_service() { BLEDevice::deinit(true); }
+
+void ble_handler_loop() {
+
+  if (deviceConnected) {
     static uint32_t notify_time = millis();
-    if (millis() - notify_time >= 1000)
-    {
+    if (millis() - notify_time >= 1000) {
       notify_time = millis();
       String payload = "";
-      for (uint8_t idx = 0; idx < config.relay_count; idx++)
-      {
+      for (uint8_t idx = 0; idx < config.relay_count; idx++) {
         payload += readRelay(config.relays[idx].channel) ? "1" : "0";
         payload += ",";
       }
@@ -177,8 +162,7 @@ void ble_handler_loop()
     }
 
     static uint32_t datetime_notify_time = millis();
-    if (millis() - datetime_notify_time >= 5000)
-    {
+    if (millis() - datetime_notify_time >= 5000) {
       struct tm tmstruct;
       getLocalTime(&tmstruct);
       char payload[20];
@@ -191,17 +175,15 @@ void ble_handler_loop()
     }
   }
 
-  // // disconnecting
-  // if (!deviceConnected && oldDeviceConnected)
-  // {
-  //     delay(500);                  // give the bluetooth stack the chance to
-  //     get things ready pServer->startAdvertising(); // restart advertising
-  //     Serial.println("start advertising");
-  //     oldDeviceConnected = deviceConnected;
-  // }
+  // disconnecting
+  if (!deviceConnected && oldDeviceConnected) {
+    delay(500); // give the bluetooth stack the chance to
+    // get things ready pServer->startAdvertising(); // restart advertising
+    Serial.println("start advertising");
+    oldDeviceConnected = deviceConnected;
+  }
 
-  if (deviceConnected && !oldDeviceConnected)
-  {
+  if (deviceConnected && !oldDeviceConnected) {
     // do stuff here on connecting
     oldDeviceConnected = deviceConnected;
   }

@@ -25,3 +25,4 @@
 
 void init_ble_service();
 void ble_handler_loop();
+void ble_stop_service();
